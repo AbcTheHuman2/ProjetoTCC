@@ -46,7 +46,16 @@ public class telaInicial {
 		btnSelecionarArquivo.setBounds(103, 136, 123, 23);
 		frame.getContentPane().add(btnSelecionarArquivo);
 		
-		JLabel lblEstado = new JLabel("Arquivo n\u00E3o encontrado");
+		String vlrEstado = "";
+		boolean estado = false;
+		
+		if (estado) {
+			vlrEstado = "teste";
+		} else {
+			vlrEstado = "Arquivo n\u00E3o encontrado";
+		}
+		
+		JLabel lblEstado = new JLabel(vlrEstado);
 		lblEstado.setBounds(233, 140, 149, 14);
 		frame.getContentPane().add(lblEstado);
 	}
