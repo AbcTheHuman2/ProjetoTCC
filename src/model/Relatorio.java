@@ -4,8 +4,17 @@ public class Relatorio extends ATORelatorio implements ITORelatorio {
 
 	@Override
 	public Relatorio gerarRelatorio() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean mudarEstado() {
+		return true;
+	}
+
+	@Override
+	public void selecionarArquivo() {
+		mudarEstado();
 	}
 
 }
