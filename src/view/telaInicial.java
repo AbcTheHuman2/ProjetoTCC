@@ -1,14 +1,20 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import model.Relatorio;
+
 public class telaInicial {
 
 	private JFrame frame;
+	
+	Relatorio rel = new Relatorio();
 
 	/**
 	 * Launch the application.
@@ -43,20 +49,43 @@ public class telaInicial {
 		frame.getContentPane().setLayout(null);
 		
 		JButton btnSelecionarArquivo = new JButton("Selecionar Arquivo");
-		btnSelecionarArquivo.setBounds(103, 136, 123, 23);
+		btnSelecionarArquivo.setBounds(51, 106, 180, 23);
 		frame.getContentPane().add(btnSelecionarArquivo);
 		
-		String vlrEstado = "";
-		boolean estado = false;
+		String vlrEstado;
+		boolean estado = rel.isEstado();
 		
 		if (estado) {
-			vlrEstado = "teste";
+			vlrEstado = "<html><font color='green'>Nome do arquivo</font></html>";
 		} else {
-			vlrEstado = "Arquivo n\u00E3o encontrado";
+			vlrEstado = "<html><font color='red'>Arquivo não encontrado</font></html>";
 		}
 		
 		JLabel lblEstado = new JLabel(vlrEstado);
-		lblEstado.setBounds(233, 140, 149, 14);
+		lblEstado.setBounds(241, 110, 308, 14);
 		frame.getContentPane().add(lblEstado);
+		
+		JButton btnGerarRelatrio = new JButton("Gerar Relatório");
+		btnGerarRelatrio.setBounds(157, 201, 132, 23);
+		frame.getContentPane().add(btnGerarRelatrio);
+		
+		btnSelecionarArquivo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+			
+		});
+		
+		btnGerarRelatrio.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+			
+		});
+		
 	}
 }
