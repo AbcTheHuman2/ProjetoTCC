@@ -3,16 +3,18 @@ package view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import model.Relatorio;
 
 public class telaInicial {
 
-	private JFrame frame;
+	public JFrame frame_inicial;
 	
 	Relatorio rel = new Relatorio();
 
@@ -24,7 +26,7 @@ public class telaInicial {
 			public void run() {
 				try {
 					telaInicial window = new telaInicial();
-					window.frame.setVisible(true);
+					window.frame_inicial.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -43,46 +45,55 @@ public class telaInicial {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frame_inicial = new JFrame("Sistema");
+		frame_inicial.setBounds(100, 100, 450, 300);
+		frame_inicial.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame_inicial.getContentPane().setLayout(null);
+		frame_inicial.setLocationRelativeTo(null);
 		
 		JButton btnSelecionarArquivo = new JButton("Selecionar Arquivo");
 		btnSelecionarArquivo.setBounds(51, 106, 180, 23);
-		frame.getContentPane().add(btnSelecionarArquivo);
+		frame_inicial.getContentPane().add(btnSelecionarArquivo);
 		
-		String vlrEstado;
-		boolean estado = rel.isEstado();
+		JButton btnAnalisarImagem = new JButton("Analisar Imagem");
+		btnAnalisarImagem.setBounds(157, 201, 132, 23);
+		frame_inicial.getContentPane().add(btnAnalisarImagem);
 		
-		if (estado) {
-			vlrEstado = "<html><font color='green'>Nome do arquivo</font></html>";
-		} else {
-			vlrEstado = "<html><font color='red'>Arquivo não encontrado</font></html>";
-		}
-		
-		JLabel lblEstado = new JLabel(vlrEstado);
+		JLabel lblEstado = new JLabel();
 		lblEstado.setBounds(241, 110, 308, 14);
-		frame.getContentPane().add(lblEstado);
+		lblEstado.setText("<html><font color='red'>Nenhum arquivo selecionado</font></html>");
+
 		
-		JButton btnGerarRelatrio = new JButton("Gerar Relatório");
-		btnGerarRelatrio.setBounds(157, 201, 132, 23);
-		frame.getContentPane().add(btnGerarRelatrio);
+		frame_inicial.getContentPane().add(lblEstado);
 		
 		btnSelecionarArquivo.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Relatorio r = new Relatorio();
+				File f = r.selecionarArquivo(rel);
 				
+				if (rel.isEstado()) {
+					lblEstado.setText("<html><font color='green'>" + f.getName() + "</font></html>");
+				} else {
+					lblEstado.setText("<html><font color='red'>Nenhum arquivo selecionado</font></html>");
+				}
 			}
 			
 		});
 		
-		btnGerarRelatrio.addActionListener(new ActionListener() {
+		btnAnalisarImagem.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				telaAnalise ta = new telaAnalise();
 				
+				if (rel.isEstado()) {
+					frame_inicial.setVisible(false);
+					ta.frame_analise.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "Erro! \nSelecione um arquivo antes de continuar!");
+				}
 			}
 			
 		});
