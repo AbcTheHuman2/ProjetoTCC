@@ -1,9 +1,10 @@
 package model;
 
+import java.io.File;
+
 public interface ITORelatorio {
 
 	public Relatorio gerarRelatorio();
-	public boolean mudarEstado();
-	public void selecionarArquivo();
+	public File selecionarArquivo(Relatorio r);
 	
 }
