@@ -1,11 +1,16 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -46,37 +51,50 @@ public class telaInicial {
 	 */
 	private void initialize() {
 		frame_inicial = new JFrame("Sistema");
-		frame_inicial.setBounds(100, 100, 450, 300);
+		frame_inicial.setBounds(100, 100, 450, 376);
 		frame_inicial.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame_inicial.getContentPane().setLayout(null);
 		frame_inicial.setLocationRelativeTo(null);
 		
+		JLabel lblEstado = new JLabel();
+		lblEstado.setBounds(241, 248, 308, 14);
+		lblEstado.setText("<html><font color='red'>Nenhum arquivo selecionado</font></html>");
+				
+		frame_inicial.getContentPane().add(lblEstado);
+		
 		JButton btnSelecionarArquivo = new JButton("Selecionar Arquivo");
-		btnSelecionarArquivo.setBounds(51, 106, 180, 23);
+		btnSelecionarArquivo.setBounds(51, 244, 180, 23);
 		frame_inicial.getContentPane().add(btnSelecionarArquivo);
 		
 		JButton btnAnalisarImagem = new JButton("Analisar Imagem");
-		btnAnalisarImagem.setBounds(157, 201, 132, 23);
+		btnAnalisarImagem.setBounds(157, 282, 132, 23);
 		frame_inicial.getContentPane().add(btnAnalisarImagem);
 		
-		JLabel lblEstado = new JLabel();
-		lblEstado.setBounds(241, 110, 308, 14);
-		lblEstado.setText("<html><font color='red'>Nenhum arquivo selecionado</font></html>");
-
-		
-		frame_inicial.getContentPane().add(lblEstado);
+		JLabel lblFoto = new JLabel();
+		lblFoto.setBounds(51, 11, 327, 207);
+		frame_inicial.getContentPane().add(lblFoto);
 		
 		btnSelecionarArquivo.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				Relatorio r = new Relatorio();
 				File f = r.selecionarArquivo(rel);
 				
 				if (rel.isEstado()) {
 					lblEstado.setText("<html><font color='green'>" + f.getName() + "</font></html>");
+					try {
+						BufferedImage bi = ImageIO.read(f);
+						frame_inicial.getContentPane().add(lblFoto);
+						lblFoto.setIcon(new ImageIcon(bi.getScaledInstance(lblFoto.getWidth(),
+								lblFoto.getHeight(), Image.SCALE_DEFAULT)));
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}					
 				} else {
 					lblEstado.setText("<html><font color='red'>Nenhum arquivo selecionado</font></html>");
+					lblFoto.setIcon(null);
 				}
 			}
 			
