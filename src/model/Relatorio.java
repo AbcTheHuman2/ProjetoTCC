@@ -3,6 +3,7 @@ package model;
 import java.io.File;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import view.telaInicial;
@@ -28,11 +29,24 @@ public class Relatorio extends ATORelatorio implements ITORelatorio {
         fc.setFileFilter(filtroPng);
         
         if (fc.showOpenDialog(fc) == JFileChooser.APPROVE_OPTION) {
-        	r.setEstado(true);
+        	
+        	File f = fc.getSelectedFile();
+            
+            if ((f.getName().endsWith(".png")) ||
+            		(f.getName().endsWith(".jpg")) ||
+            		(f.getName().endsWith(".jpeg"))) {
+            	r.setEstado(true);
+            	return f;
+            } else {
+            	JOptionPane.showMessageDialog(null, "Erro!\nPor favor, selecione apenas "
+            			+ "um arquivo com extensão .png, .jpg ou .jpeg!");
+            	r.setEstado(false);
+            	return null;
+            }
+        } else {
+        	r.setEstado(false);
+        	return null;
         }
-        
-        File f = fc.getSelectedFile();
-        return f;
 	}
 
 }
