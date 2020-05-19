@@ -11,11 +11,6 @@ import view.telaInicial;
 public class Relatorio extends ATORelatorio implements ITORelatorio {
 
 	@Override
-	public Relatorio gerarRelatorio() {
-		return null;
-	}
-
-	@Override
 	public File selecionarArquivo(Relatorio r) {
 		
 		JFileChooser fc = new JFileChooser();

@@ -3,6 +3,7 @@ package view;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class telaAnalise {
 
@@ -36,10 +37,13 @@ public class telaAnalise {
 	 */
 	private void initialize() {
 		frame_analise = new JFrame("Analisando Imagem...");
-		frame_analise.setBounds(100, 100, 450, 300);
+		frame_analise.setBounds(100, 100, 665, 418);
 		frame_analise.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame_analise.getContentPane().setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Comparando com fotos do Banco de Dados...");
+		lblNewLabel.setBounds(340, 65, 277, 14);
+		frame_analise.getContentPane().add(lblNewLabel);
 		frame_analise.setLocationRelativeTo(null);
 	}
-
 }
