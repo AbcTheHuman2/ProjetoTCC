@@ -109,6 +109,10 @@ public class telaInicial {
 				if (rel.isEstado()) {
 					frame_inicial.setVisible(false);
 					ta.frame_analise.setVisible(true);
+					
+					File f = (File) lblFoto.getIcon();
+					rel.setFoto(f);
+					
 				} else {
 					JOptionPane.showMessageDialog(null, "Erro! \nSelecione um arquivo antes de continuar!");
 				}
