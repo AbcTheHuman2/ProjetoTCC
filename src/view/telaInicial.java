@@ -7,19 +7,23 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+import java.sql.Connection;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
+import controller.RelatorioController;
 import model.Relatorio;
+import persistence.RelatorioDAO;
 
 public class telaInicial {
 
 	public JFrame frame_inicial;
+	private Connection c;
 	
 	Relatorio rel = new Relatorio();
 
@@ -79,7 +83,7 @@ public class telaInicial {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				Relatorio r = new Relatorio();
+				RelatorioController r = new RelatorioController();
 				File f = r.selecionarArquivo(rel);
 				
 				if (rel.isEstado()) {
@@ -89,6 +93,7 @@ public class telaInicial {
 						frame_inicial.getContentPane().add(lblFoto);
 						lblFoto.setIcon(new ImageIcon(bi.getScaledInstance(lblFoto.getWidth(),
 								lblFoto.getHeight(), Image.SCALE_DEFAULT)));
+						rel.setImagem(lblFoto.getIcon());
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}					
@@ -104,15 +109,22 @@ public class telaInicial {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				telaAnalise ta = new telaAnalise();
 				
 				if (rel.isEstado()) {
+					Icon img = lblFoto.getIcon();
+					rel.setImagem(img);
+					
+					try {
+						RelatorioDAO rDao = new RelatorioDAO(c);
+						rDao.insereRelatorio(rel);
+					} catch (ClassNotFoundException | SQLException e1) {
+						e1.printStackTrace();
+					}
+					
 					frame_inicial.setVisible(false);
 					ta.frame_analise.setVisible(true);
-					
-					File f = (File) lblFoto.getIcon();
-					rel.setFoto(f);
-					
 				} else {
 					JOptionPane.showMessageDialog(null, "Erro! \nSelecione um arquivo antes de continuar!");
 				}
