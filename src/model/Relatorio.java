@@ -1,47 +1,52 @@
 package model;
 
-import java.io.File;
+import javax.swing.Icon;
 
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import view.telaInicial;
-
-public class Relatorio extends ATORelatorio implements ITORelatorio {
-
-	@Override
-	public File selecionarArquivo(Relatorio r) {
-		
-		JFileChooser fc = new JFileChooser();
-        FileNameExtensionFilter filtroPng = new FileNameExtensionFilter(
-            "Arquivo PNG (*.png)", "png");
-        FileNameExtensionFilter filtroJpg = new FileNameExtensionFilter(
-                "Arquivo JPEG (*.jpg, *.jpeg)", "jpg", "jpeg");
-        
-        fc.addChoosableFileFilter(filtroPng);
-        fc.addChoosableFileFilter(filtroJpg);
-        fc.setFileFilter(filtroPng);
-        
-        if (fc.showOpenDialog(fc) == JFileChooser.APPROVE_OPTION) {
-        	
-        	File f = fc.getSelectedFile();
-            
-            if ((f.getName().endsWith(".png")) ||
-            		(f.getName().endsWith(".jpg")) ||
-            		(f.getName().endsWith(".jpeg"))) {
-            	r.setEstado(true);
-            	return f;
-            } else {
-            	JOptionPane.showMessageDialog(null, "Erro!\nPor favor, selecione apenas "
-            			+ "um arquivo com extensão .png, .jpg ou .jpeg!");
-            	r.setEstado(false);
-            	return null;
-            }
-        } else {
-        	r.setEstado(false);
-        	return null;
-        }
+public class Relatorio {
+	
+	private boolean estado;
+	private Icon imagem;
+	private boolean eh_cafe;
+	private int n_frutos;
+	private int frutos_verdes;
+	
+	public boolean isEstado() {
+		return estado;
+	}
+	
+	public void setEstado(boolean estado) {
+		this.estado = estado;
+	}
+	
+	public Icon getImagem() {
+		return imagem;
+	}
+	
+	public void setImagem(Icon imagem) {
+		this.imagem = imagem;
+	}
+	
+	public boolean isEh_cafe() {
+		return eh_cafe;
+	}
+	
+	public void setEh_cafe(boolean eh_cafe) {
+		this.eh_cafe = eh_cafe;
 	}
 
+	public int getN_frutos() {
+		return n_frutos;
+	}
+
+	public void setN_frutos(int n_frutos) {
+		this.n_frutos = n_frutos;
+	}
+
+	public int getFrutos_verdes() {
+		return frutos_verdes;
+	}
+
+	public void setFrutos_verdes(int frutos_verdes) {
+		this.frutos_verdes = frutos_verdes;
+	}
 }
