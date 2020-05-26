@@ -5,7 +5,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -85,17 +87,33 @@ public class telaInicial {
 				
 				RelatorioController r = new RelatorioController();
 				File f = r.selecionarArquivo(rel);
+				String nome_arquivo = f.getAbsolutePath();
 				
 				if (rel.isEstado()) {
 					lblEstado.setText("<html><font color='green'>" + f.getName() + "</font></html>");
 					try {
 						BufferedImage bi = ImageIO.read(f);
 						frame_inicial.getContentPane().add(lblFoto);
-						lblFoto.setIcon(new ImageIcon(bi.getScaledInstance(lblFoto.getWidth(),
-								lblFoto.getHeight(), Image.SCALE_DEFAULT)));
-						rel.setImagem(lblFoto.getIcon());
-					} catch (IOException e1) {
-						e1.printStackTrace();
+						ImageIcon imgIcon = new ImageIcon(bi.getScaledInstance(lblFoto.getWidth(),
+								lblFoto.getHeight(), Image.SCALE_DEFAULT));
+						lblFoto.setIcon(imgIcon);
+						try {
+							File arquivo = new File(nome_arquivo);
+							FileInputStream fis = new FileInputStream(arquivo);
+							ByteArrayOutputStream bos = new ByteArrayOutputStream();
+							byte[] buffer = new byte[1024];
+							
+							for (int i; (i=fis.read(buffer)) != -1;) {
+								bos.write(buffer, 0, i);
+							}
+							
+							byte[] foto = bos.toByteArray();
+							rel.setFoto(foto);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					} catch (IOException e2) {
+						e2.printStackTrace();
 					}					
 				} else {
 					lblEstado.setText("<html><font color='red'>Nenhum arquivo selecionado</font></html>");
@@ -113,8 +131,6 @@ public class telaInicial {
 				telaAnalise ta = new telaAnalise();
 				
 				if (rel.isEstado()) {
-					Icon img = lblFoto.getIcon();
-					rel.setImagem(img);
 					
 					try {
 						RelatorioDAO rDao = new RelatorioDAO(c);
