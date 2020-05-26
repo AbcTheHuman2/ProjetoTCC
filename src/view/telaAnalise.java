@@ -1,7 +1,9 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.Image;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -51,8 +53,9 @@ public class telaAnalise {
 		frame_analise.getContentPane().setLayout(null);
 		
 		JLabel lblFoto = new JLabel("");
+		Image img = new ImageIcon(rel.getFoto()).getImage();
 		
-		lblFoto.setIcon(rel.getImagem());
+		lblFoto.setIcon(new ImageIcon(img));
 		lblFoto.setBounds(34, 32, 261, 292);
 		frame_analise.getContentPane().add(lblFoto);
 		frame_analise.setLocationRelativeTo(null);

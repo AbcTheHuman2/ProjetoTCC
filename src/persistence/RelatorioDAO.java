@@ -20,5 +20,18 @@ public class RelatorioDAO implements iRelatorioDAO {
 		
 		String sql = " INSERT INTO RELATORIOS (estado, imagem) VALUES (?, ?) ";
 		PreparedStatement ps = c.prepareStatement(sql);
+		
+		String estado = "";
+		
+		if (rel.isEstado()) {
+			estado = "S";
+		} else {
+			estado = "N";
+		}
+		
+		ps.setString(0, estado);
+		ps.setBytes(1, rel.getFoto());
+		ps.execute();
+		ps.close();
 	}
 }

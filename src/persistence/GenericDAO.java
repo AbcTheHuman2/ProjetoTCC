@@ -14,8 +14,8 @@ public class GenericDAO implements iGenericDAO {
 		
 		//Nome do banco, login e senha ainda não definidos
 		c = DriverManager.getConnection("jdbc:jtds:sqlserver://127.0.0.1:1433;"
-				+ "DatabaseName=banco;namedPipes=true",
-				"sa", "123");
+				+ "DatabaseName=master;namedPipes=true",
+				"fatec_tcc", "123");
 		return c;
 	}
 
