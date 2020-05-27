@@ -4,27 +4,27 @@ import java.util.Date;
 
 public class Relatorio {
 	
-	private boolean estado;
+	private int id;
 	private boolean eh_cafe;
 	private int n_frutos;
 	private int frutos_verdes;
 	private byte[] foto;
 	private Date data;
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public Date getData() {
 		return data;
 	}
 
 	public void setData(Date data) {
 		this.data = data;
-	}
-
-	public boolean isEstado() {
-		return estado;
-	}
-	
-	public void setEstado(boolean estado) {
-		this.estado = estado;
 	}
 	
 	public boolean isEh_cafe() {

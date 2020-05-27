@@ -13,13 +13,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import controller.RelatorioController;
 import model.Relatorio;
+import persistence.GenericDAO;
 import persistence.RelatorioDAO;
 
 public class telaInicial {
@@ -89,7 +89,7 @@ public class telaInicial {
 				File f = r.selecionarArquivo(rel);
 				String nome_arquivo = f.getAbsolutePath();
 				
-				if (rel.isEstado()) {
+				if (f.getAbsoluteFile() != null) {
 					lblEstado.setText("<html><font color='green'>" + f.getName() + "</font></html>");
 					try {
 						BufferedImage bi = ImageIO.read(f);
@@ -128,19 +128,20 @@ public class telaInicial {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				telaAnalise ta = new telaAnalise();
-				
-				if (rel.isEstado()) {
+				if (rel.getFoto() != null) {
 					
 					try {
+						GenericDAO gDAO = new GenericDAO();
+						c = gDAO.getConnection();
 						RelatorioDAO rDao = new RelatorioDAO(c);
 						rDao.insereRelatorio(rel);
+						frame_inicial.setVisible(false);
+						
+						telaAnalise ta = new telaAnalise();
+						ta.frame_analise.setVisible(true);
 					} catch (ClassNotFoundException | SQLException e1) {
 						e1.printStackTrace();
 					}
-					
-					frame_inicial.setVisible(false);
-					ta.frame_analise.setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(null, "Erro! \nSelecione um arquivo antes de continuar!");
 				}

@@ -20,7 +20,7 @@ public class RelatorioController implements iRelatorioController {
         fc.addChoosableFileFilter(filtroPng);
         fc.addChoosableFileFilter(filtroJpg);
         fc.setFileFilter(filtroPng);
-        
+        	
         if (fc.showOpenDialog(fc) == JFileChooser.APPROVE_OPTION) {
         	
         	File f = fc.getSelectedFile();
@@ -28,16 +28,13 @@ public class RelatorioController implements iRelatorioController {
             if ((f.getName().endsWith(".png")) ||
             		(f.getName().endsWith(".jpg")) ||
             		(f.getName().endsWith(".jpeg"))) {
-            	r.setEstado(true);
             	return f;
             } else {
             	JOptionPane.showMessageDialog(null, "Erro!\nPor favor, selecione apenas "
             			+ "um arquivo com extensão .png, .jpg ou .jpeg!");
-            	r.setEstado(false);
             	return null;
             }
         } else {
-        	r.setEstado(false);
         	return null;
         }
 	}
