@@ -6,7 +6,7 @@ go
 
 create table RELATORIOS (
 id int identity(1,1) primary key,
-imagem varbinary(1024) not null,
+imagem varbinary(max) not null,
 dta datetime not null,
 eh_cafe char(1),
 n_frutos int,

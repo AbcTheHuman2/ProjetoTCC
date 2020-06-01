@@ -21,11 +21,11 @@ import controller.RelatorioController;
 import model.Relatorio;
 import persistence.GenericDAO;
 import persistence.RelatorioDAO;
+import persistence.iGenericDAO;
 
 public class telaInicial {
 
-	public JFrame frame_inicial;
-	private Connection c;
+	private JFrame frame_inicial;
 	
 	Relatorio rel = new Relatorio();
 
@@ -131,14 +131,15 @@ public class telaInicial {
 				if (rel.getFoto() != null) {
 					
 					try {
-						GenericDAO gDAO = new GenericDAO();
-						c = gDAO.getConnection();
-						RelatorioDAO rDao = new RelatorioDAO(c);
-						rDao.insereRelatorio(rel);
-						frame_inicial.setVisible(false);
 						
-						telaAnalise ta = new telaAnalise();
-						ta.frame_analise.setVisible(true);
+						iGenericDAO gDAO = new GenericDAO();
+						Connection c = gDAO.getConnection();
+						RelatorioDAO rDao = new RelatorioDAO();
+						rDao.insereRelatorio(rel, c);
+						
+						frame_inicial.setVisible(false);
+						new telaAnalise().setVisible(true);
+						
 					} catch (ClassNotFoundException | SQLException e1) {
 						e1.printStackTrace();
 					}
