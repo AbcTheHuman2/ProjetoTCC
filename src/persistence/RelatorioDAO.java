@@ -12,44 +12,56 @@ import java.util.Date;
 import model.Relatorio;
 
 public class RelatorioDAO implements iRelatorioDAO {
-	
-	private Connection c;
-	
-	public RelatorioDAO(Connection c) throws ClassNotFoundException, SQLException {
-		iGenericDAO gDAO = new GenericDAO();
-		c = gDAO.getConnection();
-	}
 
 	@Override
-	public void insereRelatorio(Relatorio rel) throws SQLException {
+	public void insereRelatorio(Relatorio rel, Connection c) throws SQLException {
 		
-		String sql = " INSERT INTO RELATORIOS (id, imagem, dta) VALUES (?, ?, ?) ";
+		String sql = " INSERT INTO RELATORIOS (imagem, dta) VALUES (?, ?) ";
 		PreparedStatement ps = c.prepareStatement(sql);
 		
 		//formatando data atual para inserir no banco
 		try {  
 			LocalDateTime ldt = LocalDateTime.now();
-			String data = ldt.toString();
-			Date data_formatada = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(data);
+			String data = ldt.getDayOfMonth() + "/" + ldt.getMonthValue() + "/" +
+			ldt.getYear() + " - " + ldt.getHour() + ":" + ldt.getMinute() + ":" +
+			ldt.getSecond();
+			Date data_formatada = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss").parse(data);
 			rel.setData(data_formatada);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
-		ResultSet rs = ps.getResultSet();
-		int id = rs.getInt(0);
-		rel.setId(id);
+		java.sql.Date data_sql = new java.sql.Date(rel.getData().getTime());
 		
-		ps.setInt(0, rel.getId());
 		ps.setBytes(1, rel.getFoto());
-		ps.setDate(2, java.sql.Date.valueOf(rel.getData().toString()));
+		ps.setDate(2, data_sql);
 		ps.execute();
 		ps.close();
 	}
 
 	@Override
-	public void atualizaRelatorio(Relatorio rel) throws SQLException {
-		// TODO Auto-generated method stub
+	public void atualizaRelatorio(Relatorio rel, Connection c) throws SQLException {
 		
+		String sql = " UPDATE RELATORIOS SET eh_cafe = ? WHERE id = ? ";
+	}
+
+	@Override
+	public Relatorio preencheRelatorio(Connection c) throws SQLException {
+		
+		Relatorio r = new Relatorio();
+		
+		String sql = " SELECT * FROM RELATORIOS ";
+		PreparedStatement ps = c.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+		
+		while(rs.next()) {
+			if (rs.isLast()) {
+				r.setId(rs.getInt("id"));
+				r.setFoto(rs.getBytes("imagem"));
+				r.setData(rs.getDate("dta"));
+			}
+		}
+		
+		return r;
 	}
 }
