@@ -151,4 +151,9 @@ public class telaInicial {
 		});
 		
 	}
+
+	public void setVisible(boolean b) {
+		telaInicial window = new telaInicial();
+		window.frame_inicial.setVisible(b);
+	}
 }

@@ -40,9 +40,35 @@ public class RelatorioDAO implements iRelatorioDAO {
 	}
 
 	@Override
-	public void atualizaRelatorio(Relatorio rel, Connection c) throws SQLException {
+	public Relatorio atualizaRelatorio(Relatorio r, Connection c) throws SQLException {
 		
-		String sql = " UPDATE RELATORIOS SET eh_cafe = ? WHERE id = ? ";
+		String sql = " UPDATE RELATORIOS SET eh_cafe = ?, n_frutos = ?, verdes = ? "
+				+ "WHERE id = ? ";
+		
+		PreparedStatement ps = c.prepareStatement(sql);
+		boolean bool = false;
+		int x = 0, y = 0;
+		
+		r.setEh_cafe(bool);
+		r.setN_frutos(x);
+		r.setFrutos_verdes(y);
+		
+		String b = "";
+		
+		if (bool) {
+			b = "S";
+		} else {
+			b = "N";
+		}
+		
+		ps.setString(1, b);
+		ps.setInt(2, r.getN_frutos());
+		ps.setInt(3, r.getN_frutos());
+		ps.setInt(4, r.getId());
+		ps.execute();
+		ps.close();
+		
+		return r;
 	}
 
 	@Override

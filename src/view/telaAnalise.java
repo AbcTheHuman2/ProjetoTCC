@@ -2,18 +2,11 @@ package view;
 
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,6 +16,7 @@ import model.Relatorio;
 import persistence.GenericDAO;
 import persistence.RelatorioDAO;
 import persistence.iGenericDAO;
+import javax.swing.JButton;
 
 public class telaAnalise {
 
@@ -56,13 +50,14 @@ public class telaAnalise {
 	 */
 	private void initialize() {
 		
-		ComparaImagensController ci = new ComparaImagensController();
 		iGenericDAO gDAO = new GenericDAO();
 		Connection c;
 		Relatorio r = new Relatorio();
+		RelatorioDAO rDAO = new RelatorioDAO();
+		ComparaImagensController cic = new ComparaImagensController();
+		
 		try {
 			c = gDAO.getConnection();
-			RelatorioDAO rDAO = new RelatorioDAO();
 			r = rDAO.preencheRelatorio(c);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -80,14 +75,73 @@ public class telaAnalise {
 		Image imgIcon = img.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), Image.SCALE_DEFAULT);
 		
 		lblFoto.setIcon(new ImageIcon(imgIcon));
-		frame_analise.setLocationRelativeTo(null);
 		
-		//Relatorio[] relatorio = ci.gerarRelatorio(r);
+		JLabel lblMsg = new JLabel("Comparando com fotos do banco de dados...");
+		lblMsg.setBounds(337, 40, 278, 14);
+		frame_analise.getContentPane().add(lblMsg);
+		
+		JLabel lblEstadoFoto = new JLabel("Estado Foto");
+		lblEstadoFoto.setBounds(337, 65, 104, 14);
+		frame_analise.getContentPane().add(lblEstadoFoto);
+		
+		JButton btnMenuPrincipal = new JButton("Menu Principal");
+		btnMenuPrincipal.setBounds(452, 61, 146, 23);
+		frame_analise.getContentPane().add(btnMenuPrincipal);
+		
+		JLabel lblFrutosEncontrados = new JLabel("Frutos encontrados:");
+		lblFrutosEncontrados.setBounds(337, 106, 171, 14);
+		frame_analise.getContentPane().add(lblFrutosEncontrados);
+		lblFrutosEncontrados.setVisible(false);
+		
+		JLabel lblFrutosVerdes = new JLabel("Frutos verdes:");
+		lblFrutosVerdes.setBounds(337, 131, 135, 14);
+		frame_analise.getContentPane().add(lblFrutosVerdes);
+		lblFrutosVerdes.setVisible(false);
+		
+		JLabel lblFrutosMaduros = new JLabel("Frutos maduros:");
+		lblFrutosMaduros.setBounds(337, 156, 125, 14);
+		frame_analise.getContentPane().add(lblFrutosMaduros);
+		frame_analise.setLocationRelativeTo(null);
+		lblFrutosMaduros.setVisible(false);
+		btnMenuPrincipal.setVisible(false);
+		
+		try {
+			cic.validarRelatorio(r);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			c = gDAO.getConnection();
+			rDAO.atualizaRelatorio(r, c);
+			
+			if (r.isEh_cafe()) {
+				lblEstadoFoto.setText("<html><font color='green'>Foto válida!</font></html>");
+				lblFrutosEncontrados.setVisible(true);
+				lblFrutosVerdes.setVisible(true);
+				lblFrutosMaduros.setVisible(true);
+			} else {
+				lblEstadoFoto.setText("<html><font color='red'>Foto inválida!</font></html>");
+				btnMenuPrincipal.setVisible(true);
+			}
+			
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		btnMenuPrincipal.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				frame_analise.setVisible(false);
+				new telaInicial().setVisible(true);
+			}
+		});
 	}
 	
     public void setVisible(boolean b) {
     	telaAnalise window = new telaAnalise();
 		window.frame_analise.setVisible(b);
     }
-
 }
