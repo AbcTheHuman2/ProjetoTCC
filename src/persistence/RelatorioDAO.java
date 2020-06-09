@@ -37,6 +37,8 @@ public class RelatorioDAO implements iRelatorioDAO {
 		ps.setDate(2, data_sql);
 		ps.execute();
 		ps.close();
+		
+		System.out.println("Um novo relatório foi inserido!");
 	}
 
 	@Override
@@ -68,6 +70,7 @@ public class RelatorioDAO implements iRelatorioDAO {
 		ps.execute();
 		ps.close();
 		
+		System.out.println("Relatório atualizado!");
 		return r;
 	}
 
@@ -75,7 +78,6 @@ public class RelatorioDAO implements iRelatorioDAO {
 	public Relatorio preencheRelatorio(Connection c) throws SQLException {
 		
 		Relatorio r = new Relatorio();
-		
 		String sql = " SELECT * FROM RELATORIOS ";
 		PreparedStatement ps = c.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
@@ -88,6 +90,7 @@ public class RelatorioDAO implements iRelatorioDAO {
 			}
 		}
 		
+		System.out.println("Relatório preenchido!");
 		return r;
 	}
 }
