@@ -14,7 +14,6 @@ public class GenericDAO implements iGenericDAO {
 		Class.forName("net.sourceforge.jtds.jdbc.Driver");
 		c = DriverManager.getConnection("jdbc:jtds:sqlserver://localhost:1433/db_fatec;"
 				+ "namedPipe=true;instance=SQLEXPRESS;", "fatec_tcc", "123");
-		System.out.println("Conexão OK!");
 		return c;
 	}
 

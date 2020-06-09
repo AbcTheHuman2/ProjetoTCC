@@ -88,32 +88,34 @@ public class telaInicial {
 				RelatorioController r = new RelatorioController();
 				File f = r.selecionarArquivo(rel);
 				
-				if (f.getAbsoluteFile() != null && f.getPath() != "erro") {
-					lblEstado.setText("<html><font color='green'>" + f.getName() + "</font></html>");
-					try {
-						BufferedImage bi = ImageIO.read(f);
-						frame_inicial.getContentPane().add(lblFoto);
-						ImageIcon imgIcon = new ImageIcon(bi.getScaledInstance(lblFoto.getWidth(),
-								lblFoto.getHeight(), Image.SCALE_DEFAULT));
-						lblFoto.setIcon(imgIcon);
+				if (f.getAbsoluteFile() != null) {
+					if (f.getPath() != "erro.err") {
+						lblEstado.setText("<html><font color='green'>" + f.getName() + "</font></html>");
 						try {
-							File arquivo = new File(f.getAbsolutePath());
-							FileInputStream fis = new FileInputStream(arquivo);
-							ByteArrayOutputStream bos = new ByteArrayOutputStream();
-							byte[] buffer = new byte[1024];
-							
-							for (int i; (i=fis.read(buffer)) != -1;) {
-								bos.write(buffer, 0, i);
+							BufferedImage bi = ImageIO.read(f);
+							frame_inicial.getContentPane().add(lblFoto);
+							ImageIcon imgIcon = new ImageIcon(bi.getScaledInstance(lblFoto.getWidth(),
+									lblFoto.getHeight(), Image.SCALE_DEFAULT));
+							lblFoto.setIcon(imgIcon);
+							try {
+								File arquivo = new File(f.getAbsolutePath());
+								FileInputStream fis = new FileInputStream(arquivo);
+								ByteArrayOutputStream bos = new ByteArrayOutputStream();
+								byte[] buffer = new byte[1024];
+								
+								for (int i; (i=fis.read(buffer)) != -1;) {
+									bos.write(buffer, 0, i);
+								}
+								
+								byte[] foto = bos.toByteArray();
+								rel.setFoto(foto);
+							} catch (Exception e1) {
+								e1.printStackTrace();
 							}
-							
-							byte[] foto = bos.toByteArray();
-							rel.setFoto(foto);
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					} catch (IOException e2) {
-						e2.printStackTrace();
-					}					
+						} catch (IOException e2) {
+							e2.printStackTrace();
+						}	
+					}				
 				} else {
 					lblEstado.setText("<html><font color='red'>Nenhum arquivo selecionado</font></html>");
 					lblFoto.setIcon(null);

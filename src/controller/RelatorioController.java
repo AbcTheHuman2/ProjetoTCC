@@ -34,11 +34,11 @@ public class RelatorioController implements iRelatorioController {
             } else {
             	JOptionPane.showMessageDialog(null, "Erro!\nPor favor, selecione apenas "
             			+ "um arquivo com extensão .png, .jpg ou .jpeg!");
-            	File erro = new File("erro");
+            	File erro = new File("erro.err");
             	return erro;
             }
         } else {
-        	File erro = new File("erro");
+        	File erro = new File("erro.err");
         	return erro;
         }
 	}
