@@ -106,7 +106,7 @@ public class telaAnalise {
 		btnMenuPrincipal.setVisible(false);
 		
 		try {
-			cic.validarRelatorio(r);
+			cic.iniciarRelatorio(r);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

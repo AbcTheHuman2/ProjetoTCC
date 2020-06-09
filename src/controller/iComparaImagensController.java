@@ -13,6 +13,5 @@ import org.opencv.core.Mat;
 
 public interface iComparaImagensController {
 	
-	public File converterImagem(byte[] foto) throws FileNotFoundException, IOException;
-	public void validarRelatorio(Relatorio r) throws Exception;
+	public void iniciarRelatorio(Relatorio r) throws Exception;
 }

@@ -87,9 +87,8 @@ public class telaInicial {
 				
 				RelatorioController r = new RelatorioController();
 				File f = r.selecionarArquivo(rel);
-				String nome_arquivo = f.getAbsolutePath();
 				
-				if (f.getAbsoluteFile() != null) {
+				if (f.getAbsoluteFile() != null && f.getPath() != "erro") {
 					lblEstado.setText("<html><font color='green'>" + f.getName() + "</font></html>");
 					try {
 						BufferedImage bi = ImageIO.read(f);
@@ -98,7 +97,7 @@ public class telaInicial {
 								lblFoto.getHeight(), Image.SCALE_DEFAULT));
 						lblFoto.setIcon(imgIcon);
 						try {
-							File arquivo = new File(nome_arquivo);
+							File arquivo = new File(f.getAbsolutePath());
 							FileInputStream fis = new FileInputStream(arquivo);
 							ByteArrayOutputStream bos = new ByteArrayOutputStream();
 							byte[] buffer = new byte[1024];
