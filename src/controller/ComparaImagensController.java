@@ -1,21 +1,21 @@
 package controller;
 
-import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import org.apache.commons.io.FileUtils;
-import org.opencv.core.Mat;
-import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 
 import model.Relatorio;
 
@@ -76,31 +76,22 @@ public class ComparaImagensController implements iComparaImagensController {
 			}
 		}
 		
-		File[] fileArray = imagens.toArray(new File[0]);
-		File f = new File(tDir + "foto_principal.png");
+		JFrame teste = new JFrame("Teste");
+		teste.setBounds(100, 100, 665, 418);
+		teste.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		teste.getContentPane().setLayout(null);
 		
-		try (FileOutputStream fileOuputStream = new FileOutputStream(f)){
-		    fileOuputStream.write(r.getFoto());
-		 }
+		JLabel lblFoto = new JLabel("");
+		lblFoto.setBounds(100, 100, 665, 418);
+		teste.getContentPane().add(lblFoto);
+		Image img = new ImageIcon(r.getFoto()).getImage();
 		
-		BufferedImage img_normal = ImageIO.read(f);
-		BufferedImage preto_e_branco = new BufferedImage(img_normal.getWidth(),
-				img_normal.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+		File f = new File("");
+		BufferedImage bi = ImageIO.read(f);
+		ImageIcon imgIcon = new ImageIcon(bi.getScaledInstance(lblFoto.getWidth(),
+				lblFoto.getHeight(), Image.SCALE_DEFAULT));
 		
-		Graphics2D g2d = preto_e_branco.createGraphics();
-		g2d.drawImage(img_normal, 0,0, null);
-		g2d.dispose();
-		
-		ImageIO.write(preto_e_branco, "jpg", new File(tDir + "preto_branco.jpg"));
-		
-		Mat frame = Imgcodecs.imread("preto_branco.jpg");
-		Mat img_baixa_qual = new Mat();
-		Mat hsvImage = new Mat();
-		
-		//Melhorar qualidade da imagem
-		Imgproc.blur(frame, img_baixa_qual, new Size(7, 7));
-		
-		//Converter imagem para HSV
-		Imgproc.cvtColor(img_baixa_qual, hsvImage, Imgproc.COLOR_BGR2HSV);
+		lblFoto.setIcon(imgIcon);
+		lblFoto.setVisible(true);
 	}
 }
