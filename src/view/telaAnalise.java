@@ -106,6 +106,7 @@ public class telaAnalise {
 		btnMenuPrincipal.setVisible(false);
 		
 		try {
+			System.out.println("Sistema processando dados. Aguarde um instante...");
 			cic.iniciarRelatorio(r);
 		} catch (Exception e1) {
 			e1.printStackTrace();

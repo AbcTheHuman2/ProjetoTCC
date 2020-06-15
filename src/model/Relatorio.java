@@ -9,7 +9,7 @@ public class Relatorio {
 	private int n_frutos;
 	private int frutos_verdes;
 	private byte[] foto;
-	private Date data;
+	private String data;
 	
 	public int getId() {
 		return id;
@@ -19,11 +19,11 @@ public class Relatorio {
 		this.id = id;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
 	
