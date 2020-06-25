@@ -37,22 +37,22 @@ public class RelatorioDAO implements iRelatorioDAO {
 				+ "WHERE id = ? ";
 		
 		PreparedStatement ps = c.prepareStatement(sql);
-		boolean bool = false;
+		boolean b = false;
 		int x = 0, y = 0;
 		
-		r.setEh_cafe(bool);
+		r.setEh_cafe(b);
 		r.setN_frutos(x);
 		r.setFrutos_verdes(y);
 		
-		String b = "";
+		String str_b = "";
 		
-		if (bool) {
-			b = "S";
+		if (b) {
+			str_b = "S";
 		} else {
-			b = "N";
+			str_b = "N";
 		}
 		
-		ps.setString(1, b);
+		ps.setString(1, str_b);
 		ps.setInt(2, r.getN_frutos());
 		ps.setInt(3, r.getN_frutos());
 		ps.setInt(4, r.getId());
