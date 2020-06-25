@@ -1,21 +1,22 @@
 package controller;
-
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
+import java.awt.image.DataBufferByte;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.apache.commons.io.FileUtils;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.Scalar;
+import org.opencv.highgui.HighGui;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 import model.Relatorio;
 
@@ -24,74 +25,46 @@ public class ComparaImagensController implements iComparaImagensController {
 	@Override
 	public void iniciarRelatorio(Relatorio r) throws Exception {
 		
-		List<URL> sites = new ArrayList<URL>();
-		List<File> imagens = new ArrayList<File>();
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		String path = "source/positivas_cor/";
+		String path2 = "source/positivas_hsv/";
+		List<File> fotos = new ArrayList<File>();
 		
-		//A URL abaixo possui uma lista de URLs de fotos de frutos de café
-		URL url = new URL("http://image-net.org/api/text/imagenet.synset.geturls?wnid=n12663023");
-		BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+		File pasta = new File(path);
+		File[] lista_arq = pasta.listFiles();
 		
-		//Listando URLs
-		String aux = "";
-		URL url_aux = null;
+		Scalar vermelho = new Scalar(0, 0, 255);
+		Scalar verde = new Scalar(0, 255, 0);
 		
-		int ind = 1;
+		JFrame frame = new JFrame("Teste");
+		frame.setBounds(100, 100, 450, 376);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 		
-		while (((aux = br.readLine()) != null) && (ind <= 40)) {
-			url_aux = new URL(aux);
-			sites.add(url_aux);
-			ind++;
-		}
-		br.close();
+		JLabel lblFoto = new JLabel();
+		lblFoto.setBounds(51, 11, 327, 207);
+		frame.getContentPane().add(lblFoto);
 		
-		URL[] urlArray = sites.toArray(new URL[0]);
-		File arq_img = new File("");
+		MatOfByte mob = new MatOfByte();
 		
-		String tDir = System.getProperty("java.io.tmpdir");
-		String path = "";
-		
-		HttpURLConnection huc; 
-		
-		//Fotos das URLs listadas
-		for (int i = 0; i < urlArray.length; i++) {
-			path = tDir + "imagem" + i + "_tmp.jpg";
-			arq_img = new File(path);
-			arq_img.deleteOnExit();
-			
-			String s = urlArray[i].toString();
-			
-			if (s.contains(".com") ||
-					s.contains(".org") ||
-					s.contains(".edu") ||
-					s.contains(".jp/")) {
-				huc =  (HttpURLConnection) urlArray[i].openConnection();
-				huc.setRequestMethod("GET");
-				huc.connect();
-				int code = huc.getResponseCode();
+		for (int i = 0; i < lista_arq.length; i++) {
+			if (lista_arq[i].isFile()) {
 				
-				if (code == 301) {	
-					FileUtils.copyURLToFile(urlArray[i], arq_img);
-					imagens.add(arq_img);
-				}
-			}
+				fotos.add(new File(path + lista_arq[i].getName()));
+				String str = fotos.get(i).toString();
+				
+				Mat orig = Imgcodecs.imread(str);
+				Mat hsv = new Mat();
+				
+				Imgproc.cvtColor(orig, hsv, Imgproc.COLOR_BGR2HSV);
+				Imgcodecs.imwrite(path2 + lista_arq[i].getName(), hsv);
+				
+				Core.inRange(orig, verde, vermelho, hsv);
+				Core.bitwise_not(hsv, hsv);
+			}	
 		}
 		
-		JFrame teste = new JFrame("Teste");
-		teste.setBounds(100, 100, 665, 418);
-		teste.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		teste.getContentPane().setLayout(null);
-		
-		JLabel lblFoto = new JLabel("");
-		lblFoto.setBounds(100, 100, 665, 418);
-		teste.getContentPane().add(lblFoto);
-		Image img = new ImageIcon(r.getFoto()).getImage();
-		
-		File f = new File("");
-		BufferedImage bi = ImageIO.read(f);
-		ImageIcon imgIcon = new ImageIcon(bi.getScaledInstance(lblFoto.getWidth(),
-				lblFoto.getHeight(), Image.SCALE_DEFAULT));
-		
-		lblFoto.setIcon(imgIcon);
-		lblFoto.setVisible(true);
+		System.out.println("Teste");
 	}
 }
