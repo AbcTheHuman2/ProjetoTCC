@@ -1,0 +1,3 @@
+opencv_createsamples -img todos_os_cafes.png -bg negativas_pb/bg.txt -info positivas/positivas.lst -maxxangle 0.5 -maxyangle 0.5 -maxzangle 0.5 -num 1800 -bgcolor 255
+opencv_createsamples -info positivas/positivas.lst -num 1800 -w 18 -h 18 -vec positivas.vec
+opencv_traincascade -data classificador -vec positivas.vec -bg bg.txt -numPos 1600 -numNeg 800 -numStages 10 -w 18 -h 18 -precalcValBufSize 1024 -precalcIdxBufSize 1024
