@@ -51,7 +51,7 @@ public class TreinaOpenCV {
 			
 			MatOfRect cafesDetectados = new MatOfRect();
 			
-			classificador.detectMultiScale(imagemCinzaPos, cafesDetectados, 1.19, 3, 0, new Size(30,30), new Size(500, 500));
+			classificador.detectMultiScale(imagemCinzaPos, cafesDetectados, 1.19, 3, 0, new Size(80,80), new Size(500, 500));
 			
 			//System.out.println(cafesDetectados.toArray().length);
 			//System.out.println("Caminho da imagem: "+file.getPath());

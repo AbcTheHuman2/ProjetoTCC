@@ -13,5 +13,5 @@ import org.opencv.core.Mat;
 
 public interface iComparaImagensController {
 	
-	public void iniciarRelatorio(Relatorio r) throws Exception;
+	public Relatorio iniciarRelatorio(Relatorio r) throws Exception;
 }

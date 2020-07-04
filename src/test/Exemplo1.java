@@ -14,38 +14,44 @@ import org.opencv.objdetect.CascadeClassifier;
 public class Exemplo1 {
 	public static void main(String[] args) {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		Mat imageColorida = Imgcodecs.imread("src\\outros\\cafe1.jpg");
+		Mat imageColorida = Imgcodecs.imread("source\\positivas_cor\\arabica-coffee-beans-tree-farm-260nw-1436268005.jpg");
+		//Mat imageColorida = Imgcodecs.imread("source\\positivas_cor\\003coffee.jpg");
+		//Mat imageColorida = Imgcodecs.imread("source\\5_cafe_vermelho.png");
+		
+		if (imageColorida.empty()) {
+			System.out.println("Imagem não encontrada!");
+			System.exit(0);
+		}
+		
 		Mat imagemCinza = new Mat();
-		Imgproc.cvtColor(imageColorida, imagemCinza, Imgproc.COLOR_BGR2GRAY); 
+		Imgproc.cvtColor(imageColorida, imagemCinza, Imgproc.COLOR_BGR2GRAY);
+		
+		CascadeClassifier classificador = 
+				new CascadeClassifier("source\\negativas_pb\\classificador\\cascade.xml");
 
-		for (int i = 1; i < 30; i++ ){
-			CascadeClassifier classificador = 
-					new CascadeClassifier("src\\cascades\\classificador_"+ i +"\\cascade.xml");
-
-			MatOfRect facesDetectadas = new MatOfRect();
-
-			classificador.detectMultiScale(imagemCinza, facesDetectadas, 
-					3, 				//scale factor
-					7, 					// minNeighbors
-					0,					//flags
-					new Size(40, 40), 	// minSize 
-					new Size(100, 100));  //maxSize
-
-
-				System.out.println(facesDetectadas.toArray().length);
-
-				if (facesDetectadas.toArray().length > 1){
-					for (Rect rect: facesDetectadas.toArray()){
-						System.out.println(rect.x + " " + rect.y + " " + rect.width + " " + rect.height);
-						Imgproc.rectangle(imageColorida, new Point(rect.x, rect.y ), 
-								new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255), 2);
-		//				i = 30;
-					}
-				} else {
-					System.out.println("Não há faces na imagem");
-
-				}
+		MatOfRect facesDetectadas = new MatOfRect();
+		
+		classificador.detectMultiScale(imageColorida, facesDetectadas, 
+				1.01, 				//scale factor
+				4, 					// minNeighbors
+				0,					//flags
+				new Size(80, 80), // minSize 
+				new Size(100, 100));  //maxSize
+		
+		System.out.println(facesDetectadas.toArray().length);
+		
+		if (facesDetectadas.toArray().length > 1){
+			for (Rect rect: facesDetectadas.toArray()){
+				System.out.println(rect.x + " " + rect.y + " " + rect.width + " " + rect.height);
+				
+				Imgproc.rectangle(imageColorida, new Point(rect.x, rect.y ), 
+						new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255), 2);
+		//		i = 30;
 			}
+		} else {
+			System.out.println("Não há faces na imagem");
+
+		}
 		Utilitarios ut = new Utilitarios();
 		ut.mostraImagem(ut.convertMatToImage(imageColorida));
 	}
