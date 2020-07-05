@@ -125,6 +125,8 @@ public class telaInicial {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (rel.getFoto() != null) {
+					JOptionPane.showMessageDialog(null, "O sistema irá iniciar o processamento de "
+							+ "imagens.\nAguarde um instante!\nIsso pode levar alguns minutos...");
 					telaAnalise ta = new telaAnalise();
 					ta.setRelatorio(rel);
 					ta.initialize();

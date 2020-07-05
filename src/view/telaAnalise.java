@@ -74,14 +74,24 @@ public class telaAnalise {
 		frame_analise.getContentPane().add(btnMenuPrincipal);
 		
 		JLabel lblFrutosEncontrados = new JLabel("Frutos encontrados:");
-		lblFrutosEncontrados.setBounds(337, 106, 171, 14);
+		lblFrutosEncontrados.setBounds(337, 106, 135, 14);
 		frame_analise.getContentPane().add(lblFrutosEncontrados);
 		lblFrutosEncontrados.setVisible(false);
 		
 		JLabel lblVlrFrutos = new JLabel("");
-		lblVlrFrutos.setBounds(512, 106, 90, 14);
+		lblVlrFrutos.setBounds(470, 106, 135, 14);
 		frame_analise.getContentPane().add(lblVlrFrutos);
 		lblVlrFrutos.setVisible(false);
+		
+		JLabel lblVlrFrutosVermelhos = new JLabel("");
+		lblVlrFrutosVermelhos.setBounds(470, 156, 135, 14);
+		frame_analise.getContentPane().add(lblVlrFrutosVermelhos);
+		lblVlrFrutosVermelhos.setVisible(false);
+		
+		JLabel lblVlrFrutosVerdes = new JLabel("");
+		lblVlrFrutosVerdes.setBounds(470, 131, 135, 14);
+		frame_analise.getContentPane().add(lblVlrFrutosVerdes);
+		lblVlrFrutosVerdes.setVisible(false);
 		
 		JLabel lblFrutosVerdes = new JLabel("Frutos verdes:");
 		lblFrutosVerdes.setBounds(337, 131, 135, 14);
@@ -98,15 +108,23 @@ public class telaAnalise {
 		ComparaImagensController cic = new ComparaImagensController();
 		try {
 			Relatorio rel = cic.iniciarRelatorio(r);
+			Integer integerVermelhos = rel.getFrutos_vermelhos();
+			Integer integerVerdes = rel.getN_frutos() - rel.getFrutos_vermelhos();
+			Integer integerTotal = rel.getN_frutos();
+			Integer integerPorcentagemVerm = rel.getPorcentagemVermelho();
+			Integer integerPorcentagemVerdes = rel.getPorcentagemVerde();
 			
 			if (rel.isEh_cafe()) {
 				lblEstadoFoto.setText("<html><font color='green'>Foto válida!</font></html>");
+				lblVlrFrutos.setText(integerTotal.toString());
+				lblVlrFrutosVerdes.setText(integerVermelhos.toString() + " - (" + integerPorcentagemVerdes.toString() + "%)");
+				lblVlrFrutosVermelhos.setText(integerVerdes.toString()  + " - (" + integerPorcentagemVerm.toString() + "%)");
 				lblFrutosEncontrados.setVisible(true);
-				Integer integer1 = rel.getN_frutos();
-				lblVlrFrutos.setText(integer1.toString());
-				lblVlrFrutos.setVisible(true);
-				lblFrutosVerdes.setVisible(true);
 				lblFrutosMaduros.setVisible(true);
+				lblFrutosVerdes.setVisible(true);
+				lblVlrFrutos.setVisible(true);
+				lblVlrFrutosVerdes.setVisible(true);
+				lblVlrFrutosVermelhos.setVisible(true);
 				btnMenuPrincipal.setVisible(true);
 			} else {
 				lblEstadoFoto.setText("<html><font color='red'>Foto inválida!</font></html>");
