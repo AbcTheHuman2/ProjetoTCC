@@ -4,8 +4,6 @@ import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -13,14 +11,12 @@ import javax.swing.JLabel;
 
 import controller.ComparaImagensController;
 import model.Relatorio;
-import persistence.GenericDAO;
-import persistence.RelatorioDAO;
-import persistence.iGenericDAO;
 import javax.swing.JButton;
 
 public class telaAnalise {
-
+	
 	public JFrame frame_analise;
+	private Relatorio r;
 	
 	/**
 	 * Launch the application.
@@ -42,31 +38,20 @@ public class telaAnalise {
 	 * Create the application.
 	 */
 	public telaAnalise() {
-		initialize();
+		//initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		
-		iGenericDAO gDAO = new GenericDAO();
-		Connection c;
-		Relatorio r = new Relatorio();
-		RelatorioDAO rDAO = new RelatorioDAO();
-		ComparaImagensController cic = new ComparaImagensController();
-		
-		try {
-			c = gDAO.getConnection();
-			r = rDAO.preencheRelatorio(c);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+	public void initialize() {
 		
 		frame_analise = new JFrame("Analisando Imagem...");
 		frame_analise.setBounds(100, 100, 665, 418);
 		frame_analise.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame_analise.getContentPane().setLayout(null);
+		
+		r = getRelatorio();
 		
 		JLabel lblFoto = new JLabel("");
 		lblFoto.setBounds(34, 32, 261, 292);
@@ -93,6 +78,11 @@ public class telaAnalise {
 		frame_analise.getContentPane().add(lblFrutosEncontrados);
 		lblFrutosEncontrados.setVisible(false);
 		
+		JLabel lblVlrFrutos = new JLabel("");
+		lblVlrFrutos.setBounds(512, 106, 90, 14);
+		frame_analise.getContentPane().add(lblVlrFrutos);
+		lblVlrFrutos.setVisible(false);
+		
 		JLabel lblFrutosVerdes = new JLabel("Frutos verdes:");
 		lblFrutosVerdes.setBounds(337, 131, 135, 14);
 		frame_analise.getContentPane().add(lblFrutosVerdes);
@@ -105,29 +95,26 @@ public class telaAnalise {
 		lblFrutosMaduros.setVisible(false);
 		btnMenuPrincipal.setVisible(false);
 		
+		ComparaImagensController cic = new ComparaImagensController();
 		try {
-			System.out.println("Sistema processando dados. Aguarde um instante...");
-			cic.iniciarRelatorio(r);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		
-		try {
-			c = gDAO.getConnection();
-			rDAO.atualizaRelatorio(r, c);
+			Relatorio rel = cic.iniciarRelatorio(r);
 			
-			if (r.isEh_cafe()) {
+			if (rel.isEh_cafe()) {
 				lblEstadoFoto.setText("<html><font color='green'>Foto válida!</font></html>");
 				lblFrutosEncontrados.setVisible(true);
+				Integer integer1 = rel.getN_frutos();
+				lblVlrFrutos.setText(integer1.toString());
+				lblVlrFrutos.setVisible(true);
 				lblFrutosVerdes.setVisible(true);
 				lblFrutosMaduros.setVisible(true);
+				btnMenuPrincipal.setVisible(true);
 			} else {
 				lblEstadoFoto.setText("<html><font color='red'>Foto inválida!</font></html>");
 				btnMenuPrincipal.setVisible(true);
 			}
 			
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (Exception e1) {
+			e1.printStackTrace();
 		}
 		
 		btnMenuPrincipal.addActionListener(new ActionListener() {
@@ -135,14 +122,18 @@ public class telaAnalise {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				telaInicial ti = new telaInicial();
 				frame_analise.setVisible(false);
-				new telaInicial().setVisible(true);
+				ti.frame_inicial.setVisible(true);
 			}
 		});
 	}
+
+	public void setRelatorio(Relatorio rel) {
+		this.r = rel;
+	}
 	
-    public void setVisible(boolean b) {
-    	telaAnalise window = new telaAnalise();
-		window.frame_analise.setVisible(b);
-    }
+	public Relatorio getRelatorio() {
+		return r;
+	}
 }

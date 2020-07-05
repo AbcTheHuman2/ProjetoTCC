@@ -1,44 +1,80 @@
 package controller;
-import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
 
 import model.Relatorio;
+import test.Utilitarios;
 
 public class ComparaImagensController implements iComparaImagensController {
 	
 	@Override
-	public void iniciarRelatorio(Relatorio r) throws Exception {
-		
-		//Código para gerar imagens em preto e branco
+	public Relatorio iniciarRelatorio(Relatorio r) throws Exception {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		String path = "source/negativas_cor/";
-		String path2 = "source/negativas_pb/";
-		List<File> fotos = new ArrayList<File>();
+		Mat imageColorida = Imgcodecs.imdecode(
+				new MatOfByte(r.getFoto()), Imgcodecs.IMREAD_UNCHANGED);
 		
-		File pasta = new File(path);
-		File[] lista_arq = pasta.listFiles();
+		Mat imagemCinza = new Mat();
+		Imgproc.cvtColor(imageColorida, imagemCinza, Imgproc.COLOR_BGR2GRAY);
 		
-		for (int i = 0; i < lista_arq.length; i++) {
-			if (lista_arq[i].isFile()) {
+		CascadeClassifier classificador = 
+				new CascadeClassifier("source\\negativas_pb\\classificador\\cascade_cafe_vermelho.xml");
+
+		MatOfRect facesDetectadas = new MatOfRect();
+		List<Mat> canais = new ArrayList<Mat>();
+		Core.split(imageColorida, canais);
+		
+		Mat copia = new Mat();
+		imageColorida.copyTo(copia);
+		Mat alpha = new Mat();
+		
+		Core.inRange(copia, new Scalar(75, 151, 75),  new Scalar(0, 255, 0), alpha);
+		Core.bitwise_not(alpha, alpha);
+		
+		canais.add(alpha);	
+		Core.merge(canais, copia);
+		
+		classificador.detectMultiScale(copia, facesDetectadas, 
+				1.18, 				//scale factor
+				3, 					// minNeighbors
+				0,					//flags
+				new Size(10, 10), // minSize 
+				new Size(70, 70));  //maxSize
+		
+		//System.out.println(facesDetectadas.toArray().length);
+		int frutos = 0;
+		
+		if (facesDetectadas.toArray().length > 1){
+			for (Rect rect: facesDetectadas.toArray()){
+				//System.out.println(rect.x + " " + rect.y + " " + rect.width + " " + rect.height);
 				
-				fotos.add(new File(path + lista_arq[i].getName()));
-				String str = fotos.get(i).toString();
-				Mat orig = Imgcodecs.imread(str);
-				Mat hsv = new Mat();
-				
-				if (orig.isContinuous()) {
-					Imgproc.cvtColor(orig, hsv, Imgproc.COLOR_BGR2GRAY);
-					Imgcodecs.imwrite(path2 + lista_arq[i].getName(), hsv);
-				}
+				Imgproc.rectangle(imageColorida, new Point(rect.x, rect.y ), 
+						new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 0, 255), 2);
+				frutos++;
 			}
+			r.setEh_cafe(true);
+			Utilitarios ut = new Utilitarios();
+			ut.mostraImagem(ut.convertMatToImage(imageColorida));
+		} else {
+			System.out.println("Não há faces na imagem");
+			r.setEh_cafe(false);
+			Utilitarios ut = new Utilitarios();
+			ut.mostraImagem(ut.convertMatToImage(imageColorida));
 		}
+		r.setN_frutos(frutos);
 		
-		System.out.println("Teste");
+		return r;
 	}
 }

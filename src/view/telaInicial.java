@@ -9,8 +9,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -19,13 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import controller.RelatorioController;
 import model.Relatorio;
-import persistence.GenericDAO;
-import persistence.RelatorioDAO;
-import persistence.iGenericDAO;
 
 public class telaInicial {
 
-	private JFrame frame_inicial;
+	public JFrame frame_inicial;
 	
 	Relatorio rel = new Relatorio();
 
@@ -130,20 +125,11 @@ public class telaInicial {
 			public void actionPerformed(ActionEvent e) {
 				
 				if (rel.getFoto() != null) {
-					
-					try {
-						
-						iGenericDAO gDAO = new GenericDAO();
-						Connection c = gDAO.getConnection();
-						RelatorioDAO rDao = new RelatorioDAO();
-						rDao.insereRelatorio(rel, c);
-						
-						frame_inicial.setVisible(false);
-						new telaAnalise().setVisible(true);
-						
-					} catch (ClassNotFoundException | SQLException e1) {
-						e1.printStackTrace();
-					}
+					telaAnalise ta = new telaAnalise();
+					ta.setRelatorio(rel);
+					ta.initialize();
+					frame_inicial.setVisible(false);
+					ta.frame_analise.setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(null, "Erro! \nSelecione um arquivo antes de continuar!");
 				}
@@ -151,10 +137,5 @@ public class telaInicial {
 			
 		});
 		
-	}
-
-	public void setVisible(boolean b) {
-		telaInicial window = new telaInicial();
-		window.frame_inicial.setVisible(b);
 	}
 }

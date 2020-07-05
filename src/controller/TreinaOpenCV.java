@@ -1,22 +1,13 @@
 package controller;
 
-import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Size;
@@ -51,7 +42,7 @@ public class TreinaOpenCV {
 			
 			MatOfRect cafesDetectados = new MatOfRect();
 			
-			classificador.detectMultiScale(imagemCinzaPos, cafesDetectados, 1.19, 3, 0, new Size(30,30), new Size(500, 500));
+			classificador.detectMultiScale(imagemCinzaPos, cafesDetectados, 1.19, 3, 0, new Size(80,80), new Size(500, 500));
 			
 			//System.out.println(cafesDetectados.toArray().length);
 			//System.out.println("Caminho da imagem: "+file.getPath());
