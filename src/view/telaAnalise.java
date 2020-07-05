@@ -76,7 +76,7 @@ public class telaAnalise {
 		JLabel lblFrutosEncontrados = new JLabel("Frutos encontrados:");
 		lblFrutosEncontrados.setBounds(337, 106, 171, 14);
 		frame_analise.getContentPane().add(lblFrutosEncontrados);
-		lblFrutosEncontrados.setVisible(true);
+		lblFrutosEncontrados.setVisible(false);
 		
 		JLabel lblVlrFrutos = new JLabel("");
 		lblVlrFrutos.setBounds(512, 106, 90, 14);
