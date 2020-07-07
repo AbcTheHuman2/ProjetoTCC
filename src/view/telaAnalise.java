@@ -84,12 +84,12 @@ public class telaAnalise {
 		lblVlrFrutos.setVisible(false);
 		
 		JLabel lblVlrFrutosVermelhos = new JLabel("");
-		lblVlrFrutosVermelhos.setBounds(470, 156, 135, 14);
+		lblVlrFrutosVermelhos.setBounds(470, 131, 135, 14);
 		frame_analise.getContentPane().add(lblVlrFrutosVermelhos);
 		lblVlrFrutosVermelhos.setVisible(false);
 		
 		JLabel lblVlrFrutosVerdes = new JLabel("");
-		lblVlrFrutosVerdes.setBounds(470, 131, 135, 14);
+		lblVlrFrutosVerdes.setBounds(470, 156, 135, 14);
 		frame_analise.getContentPane().add(lblVlrFrutosVerdes);
 		lblVlrFrutosVerdes.setVisible(false);
 		
@@ -117,8 +117,8 @@ public class telaAnalise {
 			if (rel.isEh_cafe()) {
 				lblEstadoFoto.setText("<html><font color='green'>Foto válida!</font></html>");
 				lblVlrFrutos.setText(integerTotal.toString());
-				lblVlrFrutosVerdes.setText(integerVermelhos.toString() + " - (" + integerPorcentagemVerdes.toString() + "%)");
-				lblVlrFrutosVermelhos.setText(integerVerdes.toString()  + " - (" + integerPorcentagemVerm.toString() + "%)");
+				lblVlrFrutosVerdes.setText(integerVerdes.toString() + " - (" + integerPorcentagemVerdes.toString() + "%)");
+				lblVlrFrutosVermelhos.setText(integerVermelhos.toString()  + " - (" + integerPorcentagemVerm.toString() + "%)");
 				lblFrutosEncontrados.setVisible(true);
 				lblFrutosMaduros.setVisible(true);
 				lblFrutosVerdes.setVisible(true);

@@ -110,8 +110,8 @@ public class ComparaImagensController implements iComparaImagensController {
 			int porcentagem = Math.round((100 * frutos_vermelhos)/frutos_totais);
 			int porcentagem2 = 100 - porcentagem;
 			r.setEh_cafe(true);
-			r.setPorcentagemVermelho(porcentagem);
-			r.setPorcentagemVerde(porcentagem2);
+			r.setPorcentagemVermelho(porcentagem2);
+			r.setPorcentagemVerde(porcentagem);
 			ut.mostraImagem(ut.convertMatToImage(imageColorida));
 		} else {
 			System.out.println("Não há faces na imagem");
