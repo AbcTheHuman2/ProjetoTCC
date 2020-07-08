@@ -42,7 +42,7 @@ public class RelatorioDAO implements iRelatorioDAO {
 		
 		r.setEh_cafe(b);
 		r.setN_frutos(x);
-		r.setFrutos_verdes(y);
+		r.setFrutos_vermelhos(y);
 		
 		String str_b = "";
 		

@@ -1,15 +1,31 @@
 package model;
 
-import java.util.Date;
-
 public class Relatorio {
 	
 	private int id;
 	private boolean eh_cafe;
 	private int n_frutos;
-	private int frutos_verdes;
+	private int frutos_vermelhos;
 	private byte[] foto;
 	private String data;
+	private int porcentagemVermelho;
+	private int porcentagemVerde;
+	
+	public int getPorcentagemVermelho() {
+		return porcentagemVermelho;
+	}
+	
+	public void setPorcentagemVermelho(int porcentagemVermelho) {
+		this.porcentagemVermelho = porcentagemVermelho;
+	}
+	
+	public int getPorcentagemVerde() {
+		return porcentagemVerde;
+	}
+	
+	public void setPorcentagemVerde(int porcentagemVerde) {
+		this.porcentagemVerde = porcentagemVerde;
+	}
 	
 	public int getId() {
 		return id;
@@ -43,12 +59,12 @@ public class Relatorio {
 		this.n_frutos = n_frutos;
 	}
 	
-	public int getFrutos_verdes() {
-		return frutos_verdes;
+	public int getFrutos_vermelhos() {
+		return frutos_vermelhos;
 	}
 	
-	public void setFrutos_verdes(int frutos_verdes) {
-		this.frutos_verdes = frutos_verdes;
+	public void setFrutos_vermelhos(int frutos_vermelhos) {
+		this.frutos_vermelhos = frutos_vermelhos;
 	}
 	
 	public byte[] getFoto() {
