@@ -19,7 +19,7 @@ public class Exemplo1 {
 		//Mat imageColorida = Imgcodecs.imread("source\\5_cafe_vermelho.png");
 		
 		if (imageColorida.empty()) {
-			System.out.println("Imagem n„o encontrada!");
+			System.out.println("Imagem n√£o encontrada!");
 			System.exit(0);
 		}
 		
@@ -49,7 +49,7 @@ public class Exemplo1 {
 		//		i = 30;
 			}
 		} else {
-			System.out.println("N„o h· faces na imagem");
+			System.out.println("N√£o h√° faces na imagem");
 
 		}
 		Utilitarios ut = new Utilitarios();
